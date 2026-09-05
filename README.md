@@ -127,6 +127,7 @@
 	・お知らせ一覧絞り込み（子ども、期間、締切有無、重要、キープ）
 	
 	### 本リリースで作る機能
+	・パスワードリセット機能
 	・検索用オリジナルタグ登録
 	・お知らせ一覧検索機能（フリーワード、タグ）
 	・締切日前日、当日のアラート機能
@@ -227,3 +228,9 @@
 ## 11. 画面遷移図
 	### 画面遷移図
 	Figma：<https://www.figma.com/board/wBhpEoYoffo4P7bN4D4fmc/01_school_notice_app?node-id=0-1&t=IXeBwdKOJfuhLsZ5-1>
+
+## 12. ER図
+https://gyazo.com/d978639c3ba11f111f7190d1a1ee2cb5
+
+drawioでのリンクは以下になります。
+https://drive.google.com/file/d/1EmpMkrl_M-9-4NjVcSRqN7Aie67l4BVw/view?usp=sharing
