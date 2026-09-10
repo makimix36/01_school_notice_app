@@ -186,11 +186,18 @@
 	### データベース
 	- **PostgreSQL**
 	  - 理由: 本番環境で広く使われている
+	利用サービス：Neon
+	  - 選定理由: 無料枠が大きく、スタートは無料で運用したいと考えたため
+		　立ち上がりの時間が気になる場合はRenderの有料に切り替える可能性あり
 
 	### インフラ
 	- **Render**
 	  - 理由: 無料枠で比較的簡単にデプロイ可能
 
+	### ファイルサーバー（画像保存用）
+	- **Cloudinary（無料枠）**
+	  - 理由: Railsの画像管理機能（Active Storage）と連携するためのGemが公式で用意、無料枠が25GBある
+			＊ActiveStrageで画像管理をする予定
 	### 開発環境
 	- **Docker**
 	  - 理由: すでに利用しており、環境構築を簡単にするため
@@ -217,6 +224,14 @@
 | MySQL | 不採用 | ローカル環境もPostgreSQLで構築ができるならそのままRenderにアップができるため |
 | SQLite | 不採用 | Renderで使うPostgreSQLのようなサーバー型ではなくファイル形式のDBなので、デプロイのたびにファイルがリセットされてしまうためRenderでは利用できない |
 
+	#### DBサービスの比較検討
+| | Render（有料） | Neon（無料枠） |
+|---|---|---|
+| コスト | 有料 | 無料 |
+| スリープ | なし | あり（一定時間アクセスがないと自動停止） |
+| 起動時間 | 常時起動 | スリープからの復帰に数秒〜十数秒かかる |
+＊MVP時点では無料であることを最優先としてNeonを選択
+　本サービス開始後にアプリ立ち上がりの時間が気になるようなら有料Renderに切り替え予定
 
 	### 10-3. キャッチアップ不足の懸念
 	### Reactの理解不足
@@ -232,7 +247,7 @@
 	Figma：<https://www.figma.com/board/wBhpEoYoffo4P7bN4D4fmc/01_school_notice_app?node-id=0-1&t=IXeBwdKOJfuhLsZ5-1>
 
 ## 12. ER図
-https://gyazo.com/5035c7be665ea6dfaec1dd5334aac0dc
+https://gyazo.com/afe5f226bc71bbe4caa3effa9f62677c
 
 drawioでのリンクは以下になります。
 https://drive.google.com/file/d/1EmpMkrl_M-9-4NjVcSRqN7Aie67l4BVw/view?usp=sharing
