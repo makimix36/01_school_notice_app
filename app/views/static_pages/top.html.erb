@@ -25,9 +25,7 @@
 
     <!-- ボタンエリア（スマホでもPCでも縦積み。横幅をボタンっぽく制限） -->
     <div class="w-full max-w-sm flex flex-col gap-4">
-      <a href="#" class="block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 px-8 rounded-full shadow-md transition duration-300">
-        メールで新規登録
-      </a>
+    <%= link_to "メールで新規登録", new_user_path, class: "block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 px-8 rounded-full shadow-md transition duration-300" %>
       <a href="#" class="block w-full text-center bg-white hover:bg-gray-50 text-gray-800 font-bold py-4 px-8 rounded-full border-2 border-gray-800 transition duration-300">
         ログイン
       </a>
