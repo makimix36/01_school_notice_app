@@ -1,20 +1,14 @@
-<header>
-  <nav class="navbar navbar-expand-lg navigation navbar-light bg-light">
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+      <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+        <%= link_to "学校お知らせ整理アプリ", root_path, class: "text-xl font-bold text-blue-600" %>
 
-    <%= link_to root_path, class: "navbar-brand" do %>
-      <%= image_tag "logo.png" %>
-    <% end %>
+        <div>
+          <ul class="navbar-nav ms-auto main-nav align-items-center">
+            <li class="nav-item">
+              <%= link_to t('header.login'), login_path, class: "nav-link" %>
+            </li>
+          </ul>
+        </div>
 
-    <button class='navbar-toggler' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation'>
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto main-nav align-items-center">
-        <li class="nav-item">
-          <%= link_to t('header.login'), login_path, class: "nav-link" %>
-        </li>
-      </ul>
-    </div>
-  </nav>
-</header>
+      </div>
+    </header>
