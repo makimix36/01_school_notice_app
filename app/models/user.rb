@@ -14,6 +14,6 @@ class User < ApplicationRecord
   private
 
   def set_default_nickname
-    self.nickname = 'no name' if nickname.blank?
-  end  
+    self.nickname = "no name" if nickname.blank?
+  end
 end
