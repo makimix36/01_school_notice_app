@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  title: MyString
+  body: MyText
+  deadline: 2026-09-18
+  period_type: 1
+  is_important: false
+  is_submission: false
+  is_document: false
+
+two:
+  user: two
+  title: MyString
+  body: MyText
+  deadline: 2026-09-18
+  period_type: 1
+  is_important: false
+  is_submission: false
+  is_document: false
