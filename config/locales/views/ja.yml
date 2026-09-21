@@ -21,10 +21,9 @@ ja:
   header:
     login: ログイン
     logout: ログアウト
-    board: 掲示板
-    board_index: 掲示板一覧
-    create_board: 掲示板作成
-    bookmark_index: ブックマーク一覧
+    notification: お知らせ
+    notification_index: お知らせ一覧
+    create_notification: お知らせ作成
     profile: プロフィール
   user_sessions:
     new:
@@ -45,6 +44,8 @@ ja:
       success: ユーザー登録が完了しました
       failure: ユーザー登録に失敗しました
   notifications:
+    index:
+      title: お知らせ一覧
     new:
       title: お知らせ登録
     create:
