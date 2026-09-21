@@ -44,3 +44,9 @@ ja:
     create:
       success: ユーザー登録が完了しました
       failure: ユーザー登録に失敗しました
+  notifications:
+    new:
+      title: お知らせ登録
+    create:
+      success: お知らせ登録が完了しました
+      failure: お知らせ登録に失敗しました

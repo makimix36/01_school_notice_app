@@ -8,3 +8,11 @@ ja:
         nickname: ニックネーム
         password: パスワード
         password_confirmation: パスワード確認
+      notification:
+        period_type: 期間
+  enums:
+      notification:
+        period_type:
+          unspecified: 指定なし
+          yearly: 年間
+          monthly: 月間
