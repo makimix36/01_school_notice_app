@@ -1,7 +1,12 @@
 class NotificationsController < ApplicationController
+  def index
+    @notifications = Notification.includes(:user)
+  end
+
   def new
     @notification = Notification.new
   end
+
   def create
     @notification = current_user.notifications.build(notification_params)
     if @notification.save
