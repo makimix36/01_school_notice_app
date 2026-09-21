@@ -10,5 +10,3 @@ class SorceryCore < ActiveRecord::Migration[7.1]
     end
   end
 end
-
-rails g model Notification user:references title:string body:text deadline:date period_type:integer:default=0 is_important:boolean:default=false is_submission:boolean:default=false is_document:boolean:default=false
