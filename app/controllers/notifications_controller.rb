@@ -34,7 +34,7 @@ class NotificationsController < ApplicationController
       render :edit, status: :unprocessable_entity
     end
   end
-  
+
   def destroy
     notification = current_user.notifications.find(params[:id])
     notification.destroy!
