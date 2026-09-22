@@ -8,184 +8,45 @@
   <p class="text-gray-500 text-center mb-8 text-sm">
     ご不明な点がございましたら、お気軽にご連絡ください。
   </p>
+  
+  <%= render 'form', notification: @notification %>
 
-  <!-- Railsの form_with を使用 (space-y-6 で各入力欄の間に均等な余白を空ける) -->
-  <%= form_with model: @notification, class: "space-y-6" do |f| %>
-<!-- 💡 もしエラーメッセージを表示したい場合はここに書きます -->
-      <%= render 'shared/error_messages', object: f.object %>
+  <script>
+    document.addEventListener("turbo:load", function() {
+      const fileInput = document.getElementById('simple-file-input');
+      const previewContainer = document.getElementById('simple-preview-container');
+      const imagePreview = document.getElementById('simple-image-preview');
+      const filePreview = document.getElementById('simple-file-preview');
+      const fileNameDisplay = document.getElementById('simple-file-name');
 
-    <!-- ▼ タイトル入力欄 ▼ -->
-    <div>
-      <%= f.label :title, "タイトル（空欄の場合No titleとなります）", class: "block text-sm font-bold text-gray-700 mb-2" %>
-      <%= f.text_field :title,
-            class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition duration-200 bg-gray-50 focus:bg-white"%>
-    </div>
-<!-- ▼ ファイルアップロード欄（画像・PDF対応版） ▼ -->
-    <div>
-      <%= f.label :image, "ファイルアップロード", class: "block text-sm font-bold text-gray-700 mb-2" %>
-      
-      <%# accept に application/pdf を追加 %>
-      <%= f.file_field :image, id: "simple-file-input", accept: 'image/*, application/pdf',
-            class: "block w-full text-sm text-gray-500
-                    file:mr-4 file:py-2.5 file:px-6
-                    file:rounded-full file:border-0
-                    file:text-sm file:font-bold
-                    file:bg-emerald-50 file:text-emerald-700
-                    hover:file:bg-emerald-100 hover:file:cursor-pointer transition-colors duration-200" %>
-                    
-      <div id="simple-preview-container" class="hidden mt-4">
-        <p class="text-xs text-gray-400 mb-2 font-medium">選択中のファイル</p>
-        
-        <%# ① 画像用のプレビューエリア（最初は隠す） %>
-        <img id="simple-image-preview" class="hidden w-40 h-40 object-cover rounded-lg border border-gray-200 shadow-sm" />
-        
-        <%# ② PDF等のファイル名表示エリア（最初は隠す） %>
-        <div id="simple-file-preview" class="hidden flex items-center p-3 border border-gray-200 rounded-lg bg-gray-50 max-w-sm">
-          <%# 赤いドキュメントアイコン %>
-          <svg class="w-6 h-6 text-red-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
-          </svg>
-          <span id="simple-file-name" class="text-sm text-gray-700 truncate"></span>
-        </div>
-      </div>
-    </div>
-
-<!-- ▼ お知らせ内容入力欄 ▼ -->
-    <div>
-      <%= f.label :body, "お知らせ内容", class: "block text-sm font-bold text-gray-700 mb-2" %>
-      
-      <%# text_field を text_area に変更し、rows: 5 で初期の高さを設定 %>
-      <%= f.text_area :body, rows: 5,
-            class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition duration-200 bg-gray-50 focus:bg-white" %>
-    </div>
-    <!-- ▼ 期限入力欄 ▼ -->
-    <div>
-      <%= f.label :deadline, "期限", class: "block text-sm font-bold text-gray-700 mb-2" %>
-      <%= f.date_field :deadline,
-            class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition duration-200 bg-gray-50 focus:bg-white"%>
-    </div>
-<!-- ▼ 期間入力欄 ▼ -->
-    <div>
-      <%= f.label :period_type, "期間", class: "block text-sm font-bold text-gray-700 mb-2" %>
-      
-      <div class="flex flex-wrap gap-3">
-        <% Notification.period_types_i18n.each do |key, text| %>
-          <div>
-            <%= f.radio_button :period_type, key, class: "sr-only peer" %>
-            
-            <%# hover:bg-gray-50 を削除し、ホバー時の背景変化をなくしました %>
-            <%= f.label :period_type, text, value: key,
-                  class: "block px-6 py-2.5 rounded-full border border-gray-300 bg-white text-sm font-medium text-gray-700 cursor-pointer transition-all duration-200 
-                          peer-checked:bg-emerald-500 peer-checked:text-white peer-checked:border-emerald-500 shadow-sm" %>
-          </div>
-        <% end %>
-      </div>
-    </div>
-<!-- ▼ 重要フラグ入力欄 ▼ -->
-    <div>
-      <%= f.label :is_important, "重要フラグ", class: "block text-sm font-bold text-gray-700 mb-2" %>
-      <label class="relative inline-flex items-center cursor-pointer">
-        <%# sr-only で実際のチェックボックスを隠し、peer で状態を監視します %>
-        <%= f.check_box :is_important, class: "sr-only peer" %>
-        
-        <%# トグルスイッチの背景と丸いボタン（Tailwindで描画） %>
-        <div class="w-11 h-6 bg-gray-300 rounded-full peer 
-                    peer-checked:after:translate-x-full peer-checked:after:border-white 
-                    after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
-                    after:bg-white after:border-gray-300 after:border after:rounded-full 
-                    after:h-5 after:w-5 after:transition-all 
-                    peer-checked:bg-emerald-500">
-        </div>        
-        <%# スイッチの横のテキスト %>
-        <span class="ml-3 text-sm font-medium text-gray-700">重要フラグをONにする</span>
-      </label>
-    </div>
-
-<!-- ▼ 提出フラグ入力欄 ▼ -->
-    <div>
-      <%= f.label :is_submission, "提出フラグ", class: "block text-sm font-bold text-gray-700 mb-2" %>
-      <label class="relative inline-flex items-center cursor-pointer">
-        <%# sr-only で実際のチェックボックスを隠し、peer で状態を監視します %>
-        <%= f.check_box :is_submission, class: "sr-only peer" %>
-        
-        <%# トグルスイッチの背景と丸いボタン（Tailwindで描画） %>
-        <div class="w-11 h-6 bg-gray-300 rounded-full peer 
-                    peer-checked:after:translate-x-full peer-checked:after:border-white 
-                    after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
-                    after:bg-white after:border-gray-300 after:border after:rounded-full 
-                    after:h-5 after:w-5 after:transition-all 
-                    peer-checked:bg-emerald-500">
-        </div>        
-        <%# スイッチの横のテキスト %>
-        <span class="ml-3 text-sm font-medium text-gray-700">提出フラグをONにする</span>
-      </label>
-    </div>
-<!-- ▼ 書類ありフラグ入力欄 ▼ -->
-    <div>
-      <%= f.label :is_document, "書類ありフラグ", class: "block text-sm font-bold text-gray-700 mb-2" %>
-      <label class="relative inline-flex items-center cursor-pointer">
-        <%# sr-only で実際のチェックボックスを隠し、peer で状態を監視します %>
-        <%= f.check_box :is_document, class: "sr-only peer" %>
-        
-        <%# トグルスイッチの背景と丸いボタン（Tailwindで描画） %>
-        <div class="w-11 h-6 bg-gray-300 rounded-full peer 
-                    peer-checked:after:translate-x-full peer-checked:after:border-white 
-                    after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
-                    after:bg-white after:border-gray-300 after:border after:rounded-full 
-                    after:h-5 after:w-5 after:transition-all 
-                    peer-checked:bg-emerald-500">
-        </div>        
-        <%# スイッチの横のテキスト %>
-        <span class="ml-3 text-sm font-medium text-gray-700">提出フラグをONにする</span>
-      </label>
-    </div>
-
-
-
-
-    <!-- ▼ 登録ボタン ▼ -->
-    <div class="pt-4">
-      <%= f.submit "登録する", 
-            class: "w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 px-8 rounded-full shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer text-lg" %>
-    </div>
-
-  <% end %>
-<script>
-  document.addEventListener("turbo:load", function() {
-    const fileInput = document.getElementById('simple-file-input');
-    const previewContainer = document.getElementById('simple-preview-container');
-    const imagePreview = document.getElementById('simple-image-preview');
-    const filePreview = document.getElementById('simple-file-preview');
-    const fileNameDisplay = document.getElementById('simple-file-name');
-
-    if (fileInput) {
-      fileInput.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        
-        if (file) {
-          // コンテナ全体を表示
-          previewContainer.classList.remove('hidden');
+      if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+          const file = e.target.files[0];
           
-          // ファイルのタイプが 'image/' で始まるかどうかを判定
-          if (file.type.startsWith('image/')) {
-            // 画像の場合はサムネイルを表示
-            const objectUrl = URL.createObjectURL(file);
-            imagePreview.src = objectUrl;
-            imagePreview.classList.remove('hidden');
-            filePreview.classList.add('hidden');
+          if (file) {
+            // コンテナ全体を表示
+            previewContainer.classList.remove('hidden');
+            
+            // ファイルのタイプが 'image/' で始まるかどうかを判定
+            if (file.type.startsWith('image/')) {
+              // 画像の場合はサムネイルを表示
+              const objectUrl = URL.createObjectURL(file);
+              imagePreview.src = objectUrl;
+              imagePreview.classList.remove('hidden');
+              filePreview.classList.add('hidden');
+            } else {
+              // 画像以外（PDFなど）の場合はファイル名を表示
+              fileNameDisplay.textContent = file.name;
+              imagePreview.classList.add('hidden');
+              filePreview.classList.remove('hidden');
+            }
           } else {
-            // 画像以外（PDFなど）の場合はファイル名を表示
-            fileNameDisplay.textContent = file.name;
-            imagePreview.classList.add('hidden');
-            filePreview.classList.remove('hidden');
+            // キャンセル時はすべて隠す
+            previewContainer.classList.add('hidden');
+            imagePreview.src = '';
           }
-        } else {
-          // キャンセル時はすべて隠す
-          previewContainer.classList.add('hidden');
-          imagePreview.src = '';
-        }
-      });
-    }
-  });
-</script>
+        });
+      }
+    });
+  </script>
 </div>
