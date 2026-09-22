@@ -11,10 +11,10 @@
     </div>
     <!-- ▼ ファイルアップロード欄（画像・PDF対応版） ▼ -->
     <div>
-      <%= f.label :image, "ファイルアップロード", class: "block text-sm font-bold text-gray-700 mb-2" %>
+      <%= f.label :file, "ファイルアップロード", class: "block text-sm font-bold text-gray-700 mb-2" %>
       
       <%# accept に application/pdf を追加 %>
-      <%= f.file_field :image, id: "simple-file-input", accept: 'image/*, application/pdf',
+      <%= f.file_field :file, id: "simple-file-input", accept: 'image/*, application/pdf',
             class: "block w-full text-sm text-gray-500
                     file:mr-4 file:py-2.5 file:px-6
                     file:rounded-full file:border-0

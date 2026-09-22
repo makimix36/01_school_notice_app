@@ -1,0 +1,84 @@
+<div class="max-w-4xl mx-auto px-4 sm:px-6 my-12">
+  
+  <!-- ▼ 戻るボタン ▼ -->
+  <div class="mb-6">
+    <%= link_to notifications_path, class: "inline-flex items-center text-sm font-bold text-gray-500 hover:text-emerald-600 transition duration-200" do %>
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+      一覧へ戻る
+    <% end %>
+  </div>
+
+  <!-- ▼ 詳細カード本体 ▼ -->
+  <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+    
+<!-- コンテンツエリア -->
+    <div class="p-8 md:p-12 flex flex-col">
+      
+      <!-- ▼ 1. 上部メタ情報（重要バッジ ＆ 期限） ▼ -->
+      <div class="flex items-center gap-4 mb-4">
+        <!-- 重要バッジ（左） -->
+        <% if @notification.is_important? %>
+          <div class="bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full shadow-sm">
+            重要
+          </div>
+        <% end %>
+        <!-- 期限（右） -->
+        <div class="flex items-center text-gray-500 text-sm font-medium">
+          <svg class="w-5 h-5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+          <% if @notification.deadline? %>
+           期限:<%= @notification.deadline %>
+          <% else %>
+          期限なし
+          <% end %>
+        </div>
+      </div>
+
+      <!-- ▼ 2. タイトル ▼ -->
+      <h1 class="text-3xl font-extrabold text-gray-900 mb-4 leading-tight">
+        <%= @notification.title %>
+      </h1>
+
+      <!-- ▼ 3. 各種タグ（タイトルの下） ▼ -->
+      <div class="flex flex-wrap gap-2 mb-8 pb-6 border-b border-gray-100">
+        <% if @notification.period_type != "unspecified" %>
+          <span class="bg-emerald-50 text-emerald-600 text-sm font-bold px-3 py-1.5 rounded-md border border-emerald-100"><%= @notification.period_type_i18n %></span>
+        <% end %>
+        <% if @notification.is_submission? %>
+          <span class="bg-blue-50 text-blue-600 text-sm font-bold px-3 py-1.5 rounded-md border border-blue-100">提出あり</span>
+        <% end %>
+        <% if @notification.is_document? %>
+          <span class="bg-purple-50 text-purple-600 text-sm font-bold px-3 py-1.5 rounded-md border border-purple-100">書類あり</span>
+        <% end %>
+      </div>
+
+      <!-- ▼ 4. 添付ファイル（プリント）エリア ▼ -->
+      <% if @notification.file.attached? %>
+      <div class="mb-8 p-5 border border-gray-200 rounded-xl bg-gray-50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      
+        <div class="flex items-center gap-4">
+          <!-- 書類アイコン -->
+          <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100">
+            <svg class="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+          </div>
+          <div>
+            <p class="text-sm font-bold text-gray-800">お知らせプリント画像</p>
+            <p class="text-xs text-gray-500 mt-1">クリックして別タブで拡大表示</p>
+          </div>
+        </div>
+        
+        <%= link_to "プリントを見る", url_for(@notification.file), target: "_blank", rel: "noopener", class: "w-full sm:w-auto text-center bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm font-bold py-2.5 px-6 rounded-lg shadow-sm transition duration-200" %>
+      </div>
+      <% end %>
+
+      <!-- ▼ 5. 本文 ▼ -->
+      <div class="text-gray-700 text-base md:text-lg leading-relaxed mb-10 whitespace-pre-wrap">
+      <%= @notification.body %>
+      </div>
+
+      <!-- ▼ 6. アクションボタン（編集 ＆ 削除） ▼ -->
+      <div class="flex flex-col sm:flex-row items-center justify-end gap-4 mt-auto pt-6 border-t border-gray-100">
+        <%= link_to "編集する", "#", class: "w-full sm:w-auto text-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 px-8 rounded-full transition duration-200" %>
+        <%= button_to "削除する", "#", method: :delete, form: { data: { turbo_confirm: "本当に削除しますか？" } }, class: "w-full sm:w-auto text-center bg-white hover:bg-red-50 text-red-500 font-bold py-3 px-8 rounded-full border border-red-200 transition duration-200" %>
+      </div>
+
+    </div>
