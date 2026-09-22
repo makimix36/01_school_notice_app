@@ -52,7 +52,9 @@
       </div>
 
       <!-- ▼ 4. 添付ファイル（プリント）エリア ▼ -->
+      <% if @notification.file.attached? %>
       <div class="mb-8 p-5 border border-gray-200 rounded-xl bg-gray-50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      
         <div class="flex items-center gap-4">
           <!-- 書類アイコン -->
           <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100">
@@ -64,8 +66,9 @@
           </div>
         </div>
         
-        <%= link_to "プリントを見る", "#", target: "_blank", rel: "noopener", class: "w-full sm:w-auto text-center bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm font-bold py-2.5 px-6 rounded-lg shadow-sm transition duration-200" %>
+        <%= link_to "プリントを見る", url_for(@notification.file), target: "_blank", rel: "noopener", class: "w-full sm:w-auto text-center bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm font-bold py-2.5 px-6 rounded-lg shadow-sm transition duration-200" %>
       </div>
+      <% end %>
 
       <!-- ▼ 5. 本文 ▼ -->
       <div class="text-gray-700 text-base md:text-lg leading-relaxed mb-10 whitespace-pre-wrap">
