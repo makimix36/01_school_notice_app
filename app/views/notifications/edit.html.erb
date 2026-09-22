@@ -1,0 +1,54 @@
+<% content_for(:title, t('.title')) %>
+<!-- フォーム全体を囲むコンテナ（白背景、角丸、ふわっとした影） -->
+<div class="max-w-2xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-lg my-12 border border-gray-100">
+  
+  <h2 class="text-2xl font-extrabold text-gray-800 mb-2 text-center">
+    <%= t('.title') %>
+  </h2>
+  <p class="text-gray-500 text-center mb-8 text-sm">
+    ご不明な点がございましたら、お気軽にご連絡ください。
+  </p>
+  <%= render 'form', notification: @notification %>
+
+  <script>
+    document.addEventListener("turbo:load", function() {
+      const fileInput = document.getElementById('simple-file-input');
+      const previewContainer = document.getElementById('simple-preview-container');
+      const imagePreview = document.getElementById('simple-image-preview');
+      const filePreview = document.getElementById('simple-file-preview');
+      const fileNameDisplay = document.getElementById('simple-file-name');
+
+      if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+          const file = e.target.files[0];
+          
+          if (file) {
+            // ファイルが選択されたら文字色を透明からグレーに戻す ▼
+            fileInput.classList.remove('text-transparent');
+            fileInput.classList.add('text-gray-500');
+            // コンテナ全体を表示
+            previewContainer.classList.remove('hidden');
+            
+            // ファイルのタイプが 'image/' で始まるかどうかを判定
+            if (file.type.startsWith('image/')) {
+              // 画像の場合はサムネイルを表示
+              const objectUrl = URL.createObjectURL(file);
+              imagePreview.src = objectUrl;
+              imagePreview.classList.remove('hidden');
+              filePreview.classList.add('hidden');
+            } else {
+              // 画像以外（PDFなど）の場合はファイル名を表示
+              fileNameDisplay.textContent = file.name;
+              imagePreview.classList.add('hidden');
+              filePreview.classList.remove('hidden');
+            }
+          } else {
+            // キャンセル時はすべて隠す
+            previewContainer.classList.add('hidden');
+            imagePreview.src = '';
+          }
+        });
+      }
+    });
+  </script>
+</div>

@@ -45,3 +45,6 @@ Thumbs.db
 /node_modules
 /app/assets/builds/*
 !/app/assets/builds/.keep
+
+app/assets/builds/*
+!app/assets/builds/.keep

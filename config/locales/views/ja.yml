@@ -48,6 +48,8 @@ ja:
       title: お知らせ一覧
     new:
       title: お知らせ作成
+    edit:
+      title: お知らせ編集
     create:
       success: お知らせを作成しました
       failure: お知らせ作成に失敗しました

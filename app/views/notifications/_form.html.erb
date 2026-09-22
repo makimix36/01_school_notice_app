@@ -1,5 +1,5 @@
   <!-- Railsの form_with を使用 (space-y-6 で各入力欄の間に均等な余白を空ける) -->
-  <%= form_with model: @notification, class: "space-y-6" do |f| %>
+  <%= form_with model: notification, class: "space-y-6" do |f| %>
     <!-- 💡 もしエラーメッセージを表示したい場合はここに書きます -->
       <%= render 'shared/error_messages', object: f.object %>
 
@@ -9,32 +9,45 @@
       <%= f.text_field :title,
             class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition duration-200 bg-gray-50 focus:bg-white"%>
     </div>
+
     <!-- ▼ ファイルアップロード欄（画像・PDF対応版） ▼ -->
     <div>
       <%= f.label :file, "ファイルアップロード", class: "block text-sm font-bold text-gray-700 mb-2" %>
-      
-      <%# accept に application/pdf を追加 %>
+
+      <%# ▼ ルビーで現在のファイルの有無と種類を判定 ▼ %>
+      <% has_file = f.object.file.attached? %>
+      <% is_image = has_file && f.object.file.content_type.start_with?('image/') %>
+      <% is_pdf = has_file && f.object.file.content_type == 'application/pdf' %>
+
+      <%# ▼ classの中に条件分岐を追加して、ファイルがあれば text-transparent を適用 ▼ %>
       <%= f.file_field :file, id: "simple-file-input", accept: 'image/*, application/pdf',
-            class: "block w-full text-sm text-gray-500
+            class: "block w-full text-sm 
+                    #{has_file ? 'text-transparent' : 'text-gray-500'} 
                     file:mr-4 file:py-2.5 file:px-6
                     file:rounded-full file:border-0
                     file:text-sm file:font-bold
                     file:bg-emerald-50 file:text-emerald-700
                     hover:file:bg-emerald-100 hover:file:cursor-pointer transition-colors duration-200" %>
-                    
-      <div id="simple-preview-container" class="hidden mt-4">
-        <p class="text-xs text-gray-400 mb-2 font-medium">選択中のファイル</p>
+
+      <%# 初期状態：ファイルがあれば hidden を外し、なければ hidden をつける %>
+      <div id="simple-preview-container" class="mt-4 <%= 'hidden' unless has_file %>">
+        <p class="text-xs text-gray-400 mb-2 font-medium">現在のファイル / 選択中のファイル</p>
         
-        <%# ① 画像用のプレビューエリア（最初は隠す） %>
-        <img id="simple-image-preview" class="hidden w-40 h-40 object-cover rounded-lg border border-gray-200 shadow-sm" />
+        <%# ① 画像用のプレビューエリア %>
+        <%# is_image が true の時だけ URL をセットし、hidden を外す %>
+        <img id="simple-image-preview" 
+             src="<%= url_for(f.object.file) if is_image %>" 
+             class="<%= 'hidden' unless is_image %> w-40 h-40 object-cover rounded-lg border border-gray-200 shadow-sm" />
         
-        <%# ② PDF等のファイル名表示エリア（最初は隠す） %>
-        <div id="simple-file-preview" class="hidden flex items-center p-3 border border-gray-200 rounded-lg bg-gray-50 max-w-sm">
-          <%# 赤いドキュメントアイコン %>
+        <%# ② PDF等のファイル名表示エリア %>
+        <%# is_pdf が true の時だけ hidden を外す %>
+        <div id="simple-file-preview" class="<%= 'hidden' unless is_pdf %> flex items-center p-3 border border-gray-200 rounded-lg bg-gray-50 max-w-sm">
           <svg class="w-6 h-6 text-red-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
           </svg>
-          <span id="simple-file-name" class="text-sm text-gray-700 truncate"></span>
+          <span id="simple-file-name" class="text-sm text-gray-700 truncate">
+            <%= f.object.file.filename.to_s if is_pdf %>
+          </span>
         </div>
       </div>
     </div>
