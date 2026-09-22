@@ -47,7 +47,7 @@ ja:
     index:
       title: お知らせ一覧
     new:
-      title: お知らせ登録
+      title: お知らせ作成
     create:
-      success: お知らせ登録が完了しました
-      failure: お知らせ登録に失敗しました
+      success: お知らせを作成しました
+      failure: お知らせ作成に失敗しました
