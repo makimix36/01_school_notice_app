@@ -7,6 +7,10 @@ class NotificationsController < ApplicationController
     @notification = Notification.new
   end
 
+def show
+  @notification = Notification.find(params[:id])
+end
+
   def create
     @notification = current_user.notifications.build(notification_params)
     if @notification.save
@@ -19,5 +23,5 @@ end
 private
 
 def notification_params
-  params.require(:notification).permit(:title, :body, :deadline, :is_important, :is_submission, :is_document, :period_type, :image)
+  params.require(:notification).permit(:title, :body, :deadline, :is_important, :is_submission, :is_document, :period_type, :file)
 end
