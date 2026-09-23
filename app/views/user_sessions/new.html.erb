@@ -1,7 +1,14 @@
 <% content_for(:title, t('.title')) %>
+<div class="fixed top-18 right-4 z-50 space-y-2">
+  <% flash.each do |message_type, message| %>
+    <div data-controller="flash" class="<%= flash_class(message_type) %> p-4 rounded shadow-lg">
+      <%= message %>
+    </div>
+  <% end %>
+</div>
 <!-- フォーム全体を囲むコンテナ（白背景、角丸、ふわっとした影） -->
 <div class="max-w-2xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-lg my-12 border border-gray-100">
-  
+
   <h2 class="text-2xl font-extrabold text-gray-800 mb-2 text-center">
     <%= t('.title') %>
   </h2>
