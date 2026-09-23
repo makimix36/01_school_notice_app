@@ -1,6 +1,7 @@
 class NotificationsController < ApplicationController
+  before_action :set_notification, only: [ :show, :edit, :update, :destroy ]
   def index
-    @notifications = current_user.notifications.includes(:user)
+    @notifications = current_user.notifications
   end
 
   def new
@@ -8,7 +9,6 @@ class NotificationsController < ApplicationController
   end
 
   def show
-    @notification = Notification.find(params[:id])
   end
 
   def create
@@ -21,12 +21,9 @@ class NotificationsController < ApplicationController
   end
 
   def edit
-    @notification = current_user.notifications.find(params[:id])
   end
 
   def update
-    @notification = current_user.notifications.find(params[:id])
-
     if @notification.update(notification_params)
       redirect_to notification_path(@notification), notice: "更新しました"
     else
@@ -36,13 +33,14 @@ class NotificationsController < ApplicationController
   end
 
   def destroy
-    notification = current_user.notifications.find(params[:id])
-    notification.destroy!
+    @notification.destroy!
     redirect_to notifications_path, notice: "削除しました"
   end
 
   private
-
+  def set_notification
+    @notification = current_user.notifications.find(params[:id])
+  end
   def notification_params
     params.require(:notification).permit(:title, :body, :deadline, :is_important, :is_submission, :is_document, :period_type, :file)
   end
