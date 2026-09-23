@@ -8616,8 +8616,22 @@ var hello_controller_default = class extends Controller {
   }
 };
 
+// app/javascript/controllers/flash_controller.js
+var flash_controller_default = class extends Controller {
+  connect() {
+    setTimeout(() => {
+      this.element.style.transition = "opacity 0.5s";
+      this.element.style.opacity = 0;
+      setTimeout(() => {
+        this.element.remove();
+      }, 500);
+    }, 3e3);
+  }
+};
+
 // app/javascript/controllers/index.js
 application.register("hello", hello_controller_default);
+application.register("flash", flash_controller_default);
 /*! Bundled license information:
 
 @hotwired/turbo/dist/turbo.es2017-esm.js:

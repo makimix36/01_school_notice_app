@@ -1,5 +1,10 @@
-<div class="max-w-4xl mx-auto px-4 sm:px-6 my-12">
-  
+<div class="fixed top-28 right-4 z-50 space-y-2">
+  <% flash.each do |message_type, message| %>
+    <div data-controller="flash" class="<%= flash_class(message_type) %> p-4 rounded shadow-lg">
+      <%= message %>
+    </div>
+  <% end %>
+</div>
   <!-- ▼ 戻るボタン ▼ -->
   <div class="mb-6">
     <%= link_to notifications_path, class: "inline-flex items-center text-sm font-bold text-gray-500 hover:text-emerald-600 transition duration-200" do %>
