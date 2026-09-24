@@ -4,6 +4,6 @@ class ApplicationController < ActionController::Base
   def render_404_or_redirect
     redirect_to notifications_path, alert: "指定されたお知らせが見つかりませんでした"
   end
-  
+
   add_flash_types :success, :danger
 end

@@ -41,6 +41,7 @@ class NotificationsController < ApplicationController
   def set_notification
     @notification = current_user.notifications.find(params[:id])
   end
+
   def notification_params
     params.require(:notification).permit(:title, :body, :deadline, :is_important, :is_submission, :is_document, :period_type, :file)
   end
