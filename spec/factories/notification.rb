@@ -44,5 +44,9 @@ FactoryBot.define do
     trait :monthly do
       period_type { :monthly }
     end
+
+    trait :with_file do
+      file { Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/files/test_image.png')) }
+    end
   end
 end
