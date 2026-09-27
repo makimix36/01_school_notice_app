@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>MyApp</title>
+    <title><%= page_title(yield(:title)) %> </title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -37,7 +37,7 @@
     <!-- 3. フッター -->
     <footer class="bg-gray-800 text-gray-400 py-6 text-center text-sm">
       <div class="max-w-6xl mx-auto px-4">
-        &copy; <%= Date.today.year %> MyApp. All rights reserved.
+        &copy; <%= Date.today.year %> ScPoke. All rights reserved.
       </div>
     </footer>
 
