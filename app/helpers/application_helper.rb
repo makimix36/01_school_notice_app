@@ -1,5 +1,11 @@
 module ApplicationHelper
-    def flash_class(message_type)
+
+  def page_title(title = '')
+    base_title = 'スクポケ - 学校お知らせ整理アプリ'
+    title.present? ? "#{title} | #{base_title}" : base_title
+  end
+
+  def flash_class(message_type)
     case message_type.to_s
     when "notice"
       "bg-green-100 text-green-800 border border-green-300"
