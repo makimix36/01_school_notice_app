@@ -1,8 +1,9 @@
   <!-- Railsの form_with を使用 (space-y-6 で各入力欄の間に均等な余白を空ける) -->
   <%= form_with model: notification, class: "space-y-6" do |f| %>
     <!-- 💡 もしエラーメッセージを表示したい場合はここに書きます -->
+    <div class="text-red-600">
       <%= render 'shared/error_messages', object: f.object %>
-
+    </div>
     <!-- ▼ タイトル入力欄 ▼ -->
     <div>
       <%= f.label :title, "タイトル（空欄の場合no titleとなります）", class: "block text-sm font-bold text-gray-700 mb-2" %>
