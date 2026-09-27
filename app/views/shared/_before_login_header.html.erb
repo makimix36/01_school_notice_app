@@ -1,13 +1,20 @@
     <header class="bg-white shadow-sm sticky top-0 z-50">
       <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-        <%= link_to "学校お知らせ整理アプリ", root_path, class: "text-xl font-bold text-blue-600" %>
-
+        <%= link_to root_path, class: "inline-block" do %>
+          <%= image_tag "logo.png", alt: "学校お知らせ整理アプリ　スクポケ", class: "h-16 md:h-20 w-auto" %>
+        <% end %>
         <div>
-          <ul class="navbar-nav ms-auto main-nav align-items-center">
-            <li class="nav-item">
-              <%= link_to t('header.login'), login_path, class: "nav-link" %>
-            </li>
-          </ul>
+      <div class="flex items-center gap-3">
+        
+        <!-- ユーザー新規作成作成ボタン（目立たせるメインカラー） -->
+        <%= link_to t('header.create_user'), new_user_path, 
+              class: "bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-bold py-2 px-4 rounded-full shadow-sm transition duration-200" %>
+        
+        <!-- ログインボタン（控えめなサブカラー） -->
+        <%= link_to t('header.login'), login_path, data: { turbo_method: :delete }, 
+              class: "bg-white hover:bg-gray-50 text-gray-700 text-sm font-bold py-2 px-4 rounded-full border border-gray-300 shadow-sm transition duration-200" %>
+              
+      </div>
         </div>
 
       </div>

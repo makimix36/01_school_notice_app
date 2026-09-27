@@ -21,6 +21,7 @@ ja:
   header:
     login: ログイン
     logout: ログアウト
+    create_user: 新規登録
     notification: お知らせ
     notification_index: お知らせ一覧
     create_notification: お知らせ作成

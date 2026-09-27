@@ -2,7 +2,9 @@
   <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
     
     <!-- ▼ 左側：アプリのタイトル ▼ -->
-    <%= link_to "学校お知らせ整理アプリ", notifications_path, class: "text-xl font-bold text-blue-600 hover:text-blue-700 transition" %>
+        <%= link_to root_path, class: "inline-block" do %>
+          <%= image_tag "logo.png", alt: "学校お知らせ整理アプリ　スクポケ", class: "h-16 md:h-20 w-auto" %>
+        <% end %>
 
     <!-- ▼ 右側：ユーザー情報とボタンのエリア ▼ -->
     <!-- flex-col（縦並び）と items-end（右寄せ）を組み合わせます -->
