@@ -1,8 +1,7 @@
 module ApplicationHelper
-
-  def page_title(title = '')
-    base_title = 'スクポケ - 学校お知らせ整理アプリ'
-    title.present? ? "#{title} | #{base_title}" : base_title
+  def page_title(title = "")
+    base_title = "スクポケ - 学校お知らせ整理アプリ"
+    title.present? ? "#{title} | #{base_title}": base_title
   end
 
   def flash_class(message_type)

@@ -17,7 +17,6 @@
 require 'rails_helper'
 
 RSpec.describe Notification, type: :model do
-
   context '全てのフィールドが有効な場合' do
     it '有効であること' do
       notification = build(:notification)
@@ -178,5 +177,5 @@ RSpec.describe Notification, type: :model do
       notification = build(:notification)
       expect(notification.is_document).to eq(false)
     end
-  end  
+  end
 end

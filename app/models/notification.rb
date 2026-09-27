@@ -1,7 +1,7 @@
 class Notification < ApplicationRecord
   belongs_to :user
   has_one_attached :file
-  
+
   validates :title, length: { maximum: 255 }
   validates :body, length: { maximum: 65535 }
   enum period_type: { unspecified: 0, yearly: 10, monthly: 20 }
