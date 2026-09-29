@@ -116,6 +116,21 @@ RSpec.describe Notification, type: :model do
     end
   end
 
+context 'file形式が違う場合' do
+    it 'ファイル形式エラーのメッセージが出ること' do
+      notification = build(:notification, body: nil)
+
+      # 確実にテキストファイルを添付する（OSの制限は受けない）
+      notification.file.attach(fixture_file_upload('spec/fixtures/files/test_text.txt'))
+
+      # バリデーションを実行する（これをしないとエラーメッセージが生成されない）
+      notification.valid?
+
+      # titleではなく、fileカラム（または設定したカラム）に対するエラーを検証する
+      expect(notification.errors[:file].join).to include("PDF、JPG、JPEG、PNG、GIF形式のみアップロード可能です")
+    end
+  end
+
   context 'is_important が true の場合' do
     it '有効であること' do
       notification = build(:notification, is_important: true)
