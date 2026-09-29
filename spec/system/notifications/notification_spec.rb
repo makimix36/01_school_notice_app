@@ -159,6 +159,15 @@ RSpec.describe 'お知らせ', type: :system do
           click_button '登録する'
           expect(page).to have_content('ファイルまたは内容のいずれかを入力してください'), 'エラーメッセージ「ファイルまたは内容のいずれかを入力してください」が表示されていません'
         end
+
+        # OSやブラウザによって.txtファイルの選択可否が異なるため、
+        # どちらのエラーメッセージが表示されてもOKとする
+        it 'ファイル形式違いでお知らせ作成に失敗すること' do
+          fill_in 'タイトル（空欄の場合no titleとなります）', with: 'テストタイトル'
+          file_path = Rails.root.join('spec', 'fixtures', 'test_text.txt')
+          click_button '登録する'
+          expect(page).to have_content(/PDF、JPG、JPEG、PNG、GIF形式のみアップロード可能です|ファイルまたは内容のいずれかを入力してください/), 'ファイル違いの登録制御ができていません'
+        end
       end
     end
 

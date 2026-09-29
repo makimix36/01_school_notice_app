@@ -48,5 +48,8 @@ FactoryBot.define do
     trait :with_file do
       file { Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/files/test_image.png')) }
     end
+    trait :with_text_file do
+      file { Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/files/test_text.txt')) }
+    end
   end
 end

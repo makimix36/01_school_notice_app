@@ -29,7 +29,7 @@ RSpec.describe 'ユーザー登録', type: :system do
         click_button '送信する'
       }.to change { User.count }.by(0)
 
-      expect(page).to have_content('パスワードは3文字以上で入力してください'), 'エラーメッセージ「パスワードは3文字以上で入力してください」が表示されていません'
+      expect(page).to have_content('パスワードは6文字以上で入力してください'), 'エラーメッセージ「パスワードは3文字以上で入力してください」が表示されていません'
       expect(page).to have_content('パスワード確認を入力してください'), 'エラーメッセージ「パスワード確認を入力してください」が表示されていません'
     end
   end
