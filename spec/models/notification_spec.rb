@@ -119,10 +119,10 @@ RSpec.describe Notification, type: :model do
 context 'file形式が違う場合' do
     it 'ファイル形式エラーのメッセージが出ること' do
       notification = build(:notification, body: nil)
-      
+
       # 確実にテキストファイルを添付する（OSの制限は受けない）
       notification.file.attach(fixture_file_upload('spec/fixtures/files/test_text.txt'))
-      
+
       # バリデーションを実行する（これをしないとエラーメッセージが生成されない）
       notification.valid?
 
