@@ -10,45 +10,5 @@
   </p>
   <%= render 'form', notification: @notification %>
 
-  <script>
-    document.addEventListener("turbo:load", function() {
-      const fileInput = document.getElementById('simple-file-input');
-      const previewContainer = document.getElementById('simple-preview-container');
-      const imagePreview = document.getElementById('simple-image-preview');
-      const filePreview = document.getElementById('simple-file-preview');
-      const fileNameDisplay = document.getElementById('simple-file-name');
 
-      if (fileInput) {
-        fileInput.addEventListener('change', function(e) {
-          const file = e.target.files[0];
-          
-          if (file) {
-            // ファイルが選択されたら文字色を透明からグレーに戻す ▼
-            fileInput.classList.remove('text-transparent');
-            fileInput.classList.add('text-gray-500');
-            // コンテナ全体を表示
-            previewContainer.classList.remove('hidden');
-            
-            // ファイルのタイプが 'image/' で始まるかどうかを判定
-            if (file.type.startsWith('image/')) {
-              // 画像の場合はサムネイルを表示
-              const objectUrl = URL.createObjectURL(file);
-              imagePreview.src = objectUrl;
-              imagePreview.classList.remove('hidden');
-              filePreview.classList.add('hidden');
-            } else {
-              // 画像以外（PDFなど）の場合はファイル名を表示
-              fileNameDisplay.textContent = file.name;
-              imagePreview.classList.add('hidden');
-              filePreview.classList.remove('hidden');
-            }
-          } else {
-            // キャンセル時はすべて隠す
-            previewContainer.classList.add('hidden');
-            imagePreview.src = '';
-          }
-        });
-      }
-    });
-  </script>
 </div>

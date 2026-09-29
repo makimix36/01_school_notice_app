@@ -11,48 +11,37 @@
             class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition duration-200 bg-gray-50 focus:bg-white"%>
     </div>
 
-    <!-- ▼ ファイルアップロード欄（画像・PDF対応版） ▼ -->
-    <div>
-    <label class="block text-sm text-gray-700 mb-2">「ファイル添付」か「お知らせ内容」のどちらかは登録してください</label>
-      <%= f.label :file, "ファイルアップロード", class: "block text-sm font-bold text-gray-700 mb-2" %>
-    <label class="block text-sm text-gray-700 mb-2">アップロード可能なファイル形式: PDF, JPG, JPEG, PNG, GIF</label>
-      <%# ▼ ルビーで現在のファイルの有無と種類を判定 ▼ %>
-      <% has_file = f.object.file.attached? %>
-      <% is_image = has_file && f.object.file.content_type.start_with?('image/') %>
-      <% is_pdf = has_file && f.object.file.content_type == 'application/pdf' %>
+<!-- ▼ ファイルアップロード欄（画像・PDF対応版） ▼ -->
+<div>
+  <label class="block text-sm text-gray-700 mb-2">「ファイル添付」か「お知らせ内容」のどちらかは登録してください</label>
+  <%= f.label :file, "ファイルアップロード", class: "block text-sm font-bold text-gray-700 mb-2" %>
+  <label class="block text-sm text-gray-700 mb-2">アップロード可能なファイル形式: PDF, JPG, JPEG, PNG, GIF</label>
 
-      <%# ▼ classの中に条件分岐を追加して、ファイルがあれば text-transparent を適用 ▼ %>
-      <%= f.file_field :file, id: "simple-file-input", accept: 'application/pdf,image/jpeg,image/png,image/gif',
-            class: "block w-full text-sm 
-                    #{has_file ? 'text-transparent' : 'text-gray-500'} 
-                    file:mr-4 file:py-2.5 file:px-6
-                    file:rounded-full file:border-0
-                    file:text-sm file:font-bold
-                    file:bg-emerald-50 file:text-emerald-700
-                    hover:file:bg-emerald-100 hover:file:cursor-pointer transition-colors duration-200" %>
+  <%= f.file_field :file, id: "simple-file-input", accept: 'application/pdf,image/jpeg,image/png,image/gif',
+        class: "block w-full text-sm text-gray-500
+                file:mr-4 file:py-2.5 file:px-6
+                file:rounded-full file:border-0
+                file:text-sm file:font-bold
+                file:bg-emerald-50 file:text-emerald-700
+                hover:file:bg-emerald-100 hover:file:cursor-pointer transition-colors duration-200" %>
 
-      <%# 初期状態：ファイルがあれば hidden を外し、なければ hidden をつける %>
-      <div id="simple-preview-container" class="mt-4 <%= 'hidden' unless has_file %>">
-        <p class="text-xs text-gray-400 mb-2 font-medium">現在のファイル / 選択中のファイル</p>
-        
-        <%# ① 画像用のプレビューエリア %>
-        <%# is_image が true の時だけ URL をセットし、hidden を外す %>
-        <img id="simple-image-preview" 
-             src="<%= url_for(f.object.file) if is_image %>" 
-             class="<%= 'hidden' unless is_image %> w-40 h-40 object-cover rounded-lg border border-gray-200 shadow-sm" />
-        
-        <%# ② PDF等のファイル名表示エリア %>
-        <%# is_pdf が true の時だけ hidden を外す %>
-        <div id="simple-file-preview" class="<%= 'hidden' unless is_pdf %> flex items-center p-3 border border-gray-200 rounded-lg bg-gray-50 max-w-sm">
-          <svg class="w-6 h-6 text-red-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
-          </svg>
-          <span id="simple-file-name" class="text-sm text-gray-700 truncate">
-            <%= f.object.file.filename.to_s if is_pdf %>
-          </span>
-        </div>
-      </div>
+  <div id="simple-preview-container" class="mt-4 hidden">
+    <p class="text-xs text-gray-400 mb-2 font-medium">現在のファイル / 選択中のファイル</p>
+
+    <!-- ① 画像用のプレビューエリア -->
+    <img id="simple-image-preview"
+         src=""
+         class="hidden w-40 h-40 object-cover rounded-lg border border-gray-200 shadow-sm" />
+
+    <!-- ② PDF等のファイル名表示エリア -->
+    <div id="simple-file-preview" class="hidden flex items-center p-3 border border-gray-200 rounded-lg bg-gray-50 max-w-sm">
+      <svg class="w-6 h-6 text-red-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+      </svg>
+      <span id="simple-file-name" class="text-sm text-gray-700 truncate"></span>
     </div>
+  </div>
+</div>
 
     <!-- ▼ お知らせ内容入力欄 ▼ -->
     <div>
@@ -151,3 +140,48 @@
     </div>
 
   <% end %>
+
+ <script>
+  // turbo:load の中ではなく、直接 document に 'change' イベントを登録します（イベント委譲）
+  document.addEventListener("change", function(e) {
+    
+    // 変更された要素(e.target)のIDが 'simple-file-input' だった時だけ実行
+    if (e.target && e.target.id === 'simple-file-input') {
+      const fileInput = e.target;
+      const file = fileInput.files[0];
+      
+      // ⚠️ポイント：再描画に対応するため、要素を毎回取得し直します
+      const previewContainer = document.getElementById('simple-preview-container');
+      const imagePreview = document.getElementById('simple-image-preview');
+      const filePreview = document.getElementById('simple-file-preview');
+      const fileNameDisplay = document.getElementById('simple-file-name');
+
+      if (file) {
+        // ▼ ファイルが選択されたら文字色を透明からグレーに戻す ▼
+        fileInput.classList.remove('text-transparent');
+        fileInput.classList.add('text-gray-500');
+
+        // コンテナ全体を表示
+        previewContainer.classList.remove('hidden');
+        
+        // ファイルのタイプが 'image/' で始まるかどうかを判定
+        if (file.type.startsWith('image/')) {
+          // 画像の場合はサムネイルを表示
+          const objectUrl = URL.createObjectURL(file);
+          imagePreview.src = objectUrl;
+          imagePreview.classList.remove('hidden');
+          filePreview.classList.add('hidden');
+        } else {
+          // 画像以外（PDFなど）の場合はファイル名を表示
+          fileNameDisplay.textContent = file.name;
+          imagePreview.classList.add('hidden');
+          filePreview.classList.remove('hidden');
+        }
+      } else {
+        // キャンセル時はすべて隠す
+        previewContainer.classList.add('hidden');
+        imagePreview.src = '';
+      }
+    }
+  });
+</script>
