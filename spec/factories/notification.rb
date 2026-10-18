@@ -45,11 +45,14 @@ FactoryBot.define do
       period_type { :monthly }
     end
 
-    trait :with_file do
-      file { Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/files/test_image.png')) }
+    # ▼ 修正：名前を複数形にし、files に対して配列 `[]` で渡す
+    trait :with_files do
+      files { [ Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/files/test_image.png')) ] }
     end
-    trait :with_text_file do
-      file { Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/files/test_text.txt')) }
+
+    # ▼ 修正：名前を複数形にし、files に対して配列 `[]` で渡す
+    trait :with_text_files do
+      files { [ Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/files/test_text.txt')) ] }
     end
   end
 end

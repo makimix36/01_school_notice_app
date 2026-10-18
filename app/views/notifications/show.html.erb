@@ -57,22 +57,44 @@
       </div>
 
       <!-- ▼ 4. 添付ファイル（プリント）エリア ▼ -->
-      <% if @notification.file.attached? %>
-      <div class="mb-8 p-5 border border-gray-200 rounded-xl bg-gray-50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-      
-        <div class="flex items-center gap-4">
-          <!-- 書類アイコン -->
-          <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100">
-            <svg class="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-          </div>
-          <div>
-            <p class="text-sm font-bold text-gray-800">お知らせプリント画像</p>
-            <p class="text-xs text-gray-500 mt-1">クリックして別タブで拡大表示</p>
-          </div>
+      <% if @notification.files.attached? %>
+        <div class="mb-8 space-y-4">
+          <% @notification.files.each do |file| %>
+            
+            <!-- 🟢 枠全体を link_to で囲む（groupクラスでホバー時の連動アニメーションを設定） -->
+            <%= link_to url_for(file), target: "_blank", rel: "noopener", class: "group block p-4 border border-gray-200 rounded-xl bg-gray-50 hover:bg-white hover:border-emerald-300 hover:shadow-md transition-all duration-200" do %>
+              <div class="flex items-center gap-4">
+                
+                <!-- 画像とそれ以外（PDFなど）で表示を分岐 -->
+                <% if file.content_type.start_with?('image/') %>
+                  <!-- 画像の場合：サムネイルプレビュー -->
+                  <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden border border-gray-200 shadow-sm bg-white group-hover:ring-2 group-hover:ring-emerald-200 transition-all">
+                    <%= image_tag file, class: "w-full h-full object-cover" %>
+                  </div>
+                <% else %>
+                  <!-- PDFなどの場合：書類アイコン -->
+                  <div class="bg-white w-16 h-16 flex items-center justify-center rounded-lg shadow-sm border border-gray-100 flex-shrink-0 group-hover:ring-2 group-hover:ring-emerald-200 transition-all">
+                    <svg class="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                  </div>
+                <% end %>
+
+                <!-- ⚠️ flex-1 と min-w-0 を追加し、truncate が確実に効くように修正 -->
+                <div class="flex-1 min-w-0">
+                  <!-- ファイル名を表示（ホバー時に文字色を少し変更） -->
+                  <p class="text-sm font-bold text-gray-800 truncate group-hover:text-emerald-600 transition-colors"><%= file.filename %></p>
+                  <p class="text-xs text-gray-500 mt-1">クリックして別タブで表示</p>
+                </div>
+
+                <!-- リンクであることを示すアイコン（右端） -->
+                <div class="flex-shrink-0 text-gray-400 group-hover:text-emerald-500 transition-colors pl-2">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </div>
+                
+              </div>
+            <% end %>
+            
+          <% end %>
         </div>
-        
-        <%= link_to "プリントを見る", url_for(@notification.file), target: "_blank", rel: "noopener", class: "w-full sm:w-auto text-center bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm font-bold py-2.5 px-6 rounded-lg shadow-sm transition duration-200" %>
-      </div>
       <% end %>
 
       <!-- ▼ 5. 本文 ▼ -->

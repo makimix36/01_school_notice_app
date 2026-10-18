@@ -9,6 +9,13 @@
     ご不明な点がございましたら、お気軽にご連絡ください。
   </p>
   <%= render 'form', notification: @notification %>
-
+  <!-- 🟢 ここから追加：詳細画面に戻るリンク -->
+  <div class="mt-8 text-center">
+    <%= link_to notification_path(@notification), class: "inline-flex items-center text-sm font-bold text-gray-500 hover:text-emerald-600 transition duration-200" do %>
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+      詳細画面に戻る
+    <% end %>
+  </div>
+  <!-- 🟢 ここまで -->
 
 </div>
