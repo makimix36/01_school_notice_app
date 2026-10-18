@@ -47,12 +47,12 @@ FactoryBot.define do
 
     # ▼ 修正：名前を複数形にし、files に対して配列 `[]` で渡す
     trait :with_files do
-      files { [Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/files/test_image.png'))] }
+      files { [ Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/files/test_image.png')) ] }
     end
-    
+
     # ▼ 修正：名前を複数形にし、files に対して配列 `[]` で渡す
     trait :with_text_files do
-      files { [Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/files/test_text.txt'))] }
+      files { [ Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/files/test_text.txt')) ] }
     end
   end
 end
