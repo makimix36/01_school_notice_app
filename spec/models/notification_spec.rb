@@ -85,18 +85,18 @@ RSpec.describe Notification, type: :model do
     end
   end
 
-  context 'fileとbodyがどちらも存在する場合' do
+  context 'filesとbodyがどちらも存在する場合' do
     it '有効であること' do
       notification = build(:notification, body: '本文あり')
-      notification.file.attach(fixture_file_upload('spec/fixtures/files/test_image.png'))
+      notification.files.attach(fixture_file_upload('spec/fixtures/files/test_image.png'))
       expect(notification).to be_valid
     end
   end
 
-  context 'fileのみ存在する場合' do
+  context 'filesのみ存在する場合' do
     it '有効であること' do
       notification = build(:notification, body: nil)
-      notification.file.attach(fixture_file_upload('spec/fixtures/files/test_image.png'))
+      notification.files.attach(fixture_file_upload('spec/fixtures/files/test_image.png'))
       expect(notification).to be_valid
     end
   end
@@ -115,19 +115,29 @@ RSpec.describe Notification, type: :model do
       expect(notification.errors[:base]).to include('ファイルまたは内容のいずれかを入力してください')
     end
   end
-
+  context '複数のファイルが存在する場合' do
+      it '有効であること' do
+        notification = build(:notification, body: nil)
+        notification.files.attach([
+          fixture_file_upload('spec/fixtures/files/test_image.png'),
+          fixture_file_upload('spec/fixtures/files/test_image2.png') # 別のダミー画像
+        ])
+        expect(notification).to be_valid
+        expect(notification.files.count).to eq 2
+      end
+    end
 context 'file形式が違う場合' do
     it 'ファイル形式エラーのメッセージが出ること' do
       notification = build(:notification, body: nil)
 
       # 確実にテキストファイルを添付する（OSの制限は受けない）
-      notification.file.attach(fixture_file_upload('spec/fixtures/files/test_text.txt'))
+      notification.files.attach(fixture_file_upload('spec/fixtures/files/test_text.txt'))
 
       # バリデーションを実行する（これをしないとエラーメッセージが生成されない）
       notification.valid?
 
       # titleではなく、fileカラム（または設定したカラム）に対するエラーを検証する
-      expect(notification.errors[:file].join).to include("PDF、JPG、JPEG、PNG、GIF形式のみアップロード可能です")
+      expect(notification.errors[:files].join).to include("PDF、JPG、JPEG、PNG、GIF形式のみアップロード可能です")
     end
   end
 

@@ -39,7 +39,7 @@ RSpec.describe 'お知らせ', type: :system do
         end
 
         context 'お知らせがある場合（ファイルありの場合）' do
-          let(:notification) { create(:notification, :with_file, :important, :submission, :document, :yearly, user: user) }
+          let(:notification) { create(:notification, :with_files, :important, :submission, :document, :yearly, user: user) }
           it 'ファイルが表示されること' do
             notification
             login_as(user)
@@ -85,7 +85,7 @@ RSpec.describe 'お知らせ', type: :system do
       context 'ログインしている場合' do
         before { login_as(user) }
         context 'お知らせがある場合（ファイルありの場合）' do
-          let(:notification) { create(:notification, :with_file, :important, :submission, :document, :yearly, user: user) }
+          let(:notification) { create(:notification, :with_files, :important, :submission, :document, :yearly, user: user) }
           it 'ファイルが表示されること' do
             notification
             click_on('学校お知らせ整理アプリ　スクポケ')
@@ -96,7 +96,7 @@ RSpec.describe 'お知らせ', type: :system do
             expect(page).to have_content('重要'), '重要フラグが表示されていません'
             expect(page).to have_content('提出あり'), '提出フラグが表示されていません'
             expect(page).to have_content('書類あり'), '書類フラグが表示されていません'
-            expect(page).to have_link 'プリントを見る'
+            expect(page).to have_link 'クリックして別タブで表示'
           end
         end
         context 'お知らせがある場合（ファイルなしの場合）' do
@@ -111,7 +111,7 @@ RSpec.describe 'お知らせ', type: :system do
             expect(page).to have_no_content('重要'), '重要フラグが正しく表示されていません'
             expect(page).to have_no_content('提出あり'), '提出フラグが正しく表示されていません'
             expect(page).to have_no_content('書類あり'), '書類フラグが正しく表示されていません'
-            expect(page).to have_no_link 'プリントを見る'
+            expect(page).to have_no_link '拡大'
           end
         end
         context 'タイトルの確認' do

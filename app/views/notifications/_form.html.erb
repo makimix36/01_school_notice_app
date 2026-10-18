@@ -14,10 +14,62 @@
 <!-- ▼ ファイルアップロード欄（画像・PDF対応版） ▼ -->
 <div>
   <label class="block text-sm text-gray-700 mb-2">「ファイル添付」か「お知らせ内容」のどちらかは登録してください</label>
-  <%= f.label :file, "ファイルアップロード", class: "block text-sm font-bold text-gray-700 mb-2" %>
+  <%= f.label :files, "ファイルアップロード", class: "block text-sm font-bold text-gray-700 mb-2" %>
   <label class="block text-sm text-gray-700 mb-2">アップロード可能なファイル形式: PDF, JPG, JPEG, PNG, GIF</label>
 
-  <%= f.file_field :file, id: "simple-file-input", accept: 'application/pdf,image/jpeg,image/png,image/gif',
+<!-- 🟢 ここから：すでに登録されているファイルの表示エリア（プレビュー＆削除機能付き） -->
+  <% if f.object.files.attached? %>
+    <div class="mb-4 p-4 border border-emerald-100 rounded-lg bg-emerald-50/30">
+      <p class="text-xs text-gray-600 font-bold mb-3">現在登録されているファイル（右上の×をクリックして更新すると削除されます）</p>
+      
+      <div class="flex flex-wrap gap-4">
+        <% f.object.files.each do |file| %>
+          <!-- プレビュー枠 -->
+          <div class="relative border border-gray-200 rounded-lg bg-white shadow-sm overflow-hidden w-32 h-32 flex-shrink-0">
+            
+            <!-- ① 画像かそれ以外かで表示を分ける -->
+            <% if file.content_type.start_with?('image/') %>
+              <!-- 画像のプレビュー -->
+              <%= image_tag file, class: "w-full h-full object-cover" %>
+            <% else %>
+              <!-- PDFなどのプレビュー -->
+              <div class="w-full h-full flex flex-col items-center justify-center p-2 bg-gray-50">
+                <svg class="w-8 h-8 text-emerald-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                <span class="text-xs text-gray-700 truncate w-full text-center"><%= file.filename %></span>
+              </div>
+            <% end %>
+
+            <!-- ⚠️修正：チェックボックスをラベルの外に出し、id を付与して peer クラスを監視させます -->
+            <%= check_box_tag "notification[file_ids_to_delete][]", file.id, false, id: "delete_file_#{file.id}", class: "sr-only peer" %>
+
+            <!-- ③ 削除状態を分かりやすくするオーバーレイ（チェックボックスと同じ階層に配置） -->
+            <div class="absolute inset-0 bg-red-500/10 hidden peer-checked:block pointer-events-none"></div>
+            <div class="absolute inset-0 hidden peer-checked:flex items-center justify-center pointer-events-none">
+               <span class="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded shadow-md">削除予定</span>
+            </div>
+
+            <!-- ② 削除用ボタン（for属性でチェックボックスを遠隔操作） -->
+            <label for="delete_file_<%= file.id %>" class="absolute top-1 right-1 cursor-pointer z-10">
+              <!-- 通常時の×ボタン -->
+              <div class="w-7 h-7 bg-white/90 hover:bg-white text-gray-500 hover:text-red-500 rounded-full flex items-center justify-center shadow-sm transition-colors duration-200 peer-checked:hidden">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+              </div>
+
+              <!-- チェック時（削除予定時）の赤い×ボタン -->
+              <div class="hidden peer-checked:flex w-7 h-7 bg-red-500 text-white rounded-full items-center justify-center shadow-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+              </div>
+            </label>
+            
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  <!-- 🟢 ここまで -->
+
+  <!-- 変更点: :file を :files にし、multiple: true を追加 -->
+  <%= f.file_field :files, multiple: true, id: "simple-file-input", accept: 'application/pdf,image/jpeg,image/png,image/gif',
         class: "block w-full text-sm text-gray-500
                 file:mr-4 file:py-2.5 file:px-6
                 file:rounded-full file:border-0
@@ -25,20 +77,13 @@
                 file:bg-emerald-50 file:text-emerald-700
                 hover:file:bg-emerald-100 hover:file:cursor-pointer transition-colors duration-200" %>
 
+  <!-- プレビュー表示エリアを複数対応に書き換え -->
   <div id="simple-preview-container" class="mt-4 hidden">
-    <p class="text-xs text-gray-400 mb-2 font-medium">現在のファイル / 選択中のファイル</p>
-
-    <!-- ① 画像用のプレビューエリア -->
-    <img id="simple-image-preview"
-         src=""
-         class="hidden w-40 h-40 object-cover rounded-lg border border-gray-200 shadow-sm" />
-
-    <!-- ② PDF等のファイル名表示エリア -->
-    <div id="simple-file-preview" class="hidden flex items-center p-3 border border-gray-200 rounded-lg bg-gray-50 max-w-sm">
+    <p class="text-xs text-gray-400 mb-2 font-medium">選択中のファイル</p>
+    <div id="preview-list" class="flex flex-wrap gap-4">
       <svg class="w-6 h-6 text-red-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
         <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
       </svg>
-      <span id="simple-file-name" class="text-sm text-gray-700 truncate"></span>
     </div>
   </div>
 </div>
@@ -141,46 +186,49 @@
 
   <% end %>
 
- <script>
-  // turbo:load の中ではなく、直接 document に 'change' イベントを登録します（イベント委譲）
+<script>
   document.addEventListener("change", function(e) {
-    
-    // 変更された要素(e.target)のIDが 'simple-file-input' だった時だけ実行
     if (e.target && e.target.id === 'simple-file-input') {
       const fileInput = e.target;
-      const file = fileInput.files[0];
-      
-      // ⚠️ポイント：再描画に対応するため、要素を毎回取得し直します
+      const files = fileInput.files;
       const previewContainer = document.getElementById('simple-preview-container');
-      const imagePreview = document.getElementById('simple-image-preview');
-      const filePreview = document.getElementById('simple-file-preview');
-      const fileNameDisplay = document.getElementById('simple-file-name');
+      const previewList = document.getElementById('preview-list');
 
-      if (file) {
-        // ▼ ファイルが選択されたら文字色を透明からグレーに戻す ▼
+      // プレビューエリアを一度リセットする
+      previewList.innerHTML = '';
+
+      if (files.length > 0) {
         fileInput.classList.remove('text-transparent');
         fileInput.classList.add('text-gray-500');
-
-        // コンテナ全体を表示
         previewContainer.classList.remove('hidden');
-        
-        // ファイルのタイプが 'image/' で始まるかどうかを判定
-        if (file.type.startsWith('image/')) {
-          // 画像の場合はサムネイルを表示
-          const objectUrl = URL.createObjectURL(file);
-          imagePreview.src = objectUrl;
-          imagePreview.classList.remove('hidden');
-          filePreview.classList.add('hidden');
-        } else {
-          // 画像以外（PDFなど）の場合はファイル名を表示
-          fileNameDisplay.textContent = file.name;
-          imagePreview.classList.add('hidden');
-          filePreview.classList.remove('hidden');
-        }
+
+        // 選択されたすべてのファイルをループ処理
+        Array.from(files).forEach(file => {
+          const fileDiv = document.createElement('div');
+          
+          if (file.type.startsWith('image/')) {
+            // 画像用のプレビュー
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.className = 'w-40 h-40 object-cover rounded-lg border border-gray-200 shadow-sm';
+            fileDiv.appendChild(img);
+          } else {
+            // PDF等用のプレビュー
+            const pdfDiv = document.createElement('div');
+            pdfDiv.className = 'flex items-center p-3 border border-gray-200 rounded-lg bg-gray-50 max-w-sm';
+            pdfDiv.innerHTML = `
+              <svg class="w-6 h-6 text-red-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm text-gray-700 truncate">${file.name}</span>
+            `;
+            fileDiv.appendChild(pdfDiv);
+          }
+          previewList.appendChild(fileDiv);
+        });
       } else {
-        // キャンセル時はすべて隠す
+        // キャンセル時は隠す
         previewContainer.classList.add('hidden');
-        imagePreview.src = '';
       }
     }
   });
