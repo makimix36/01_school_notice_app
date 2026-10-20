@@ -56,10 +56,11 @@ def index
 
   private
   def set_notification
-    @notification = current_user.notifications.find(params[:id])
+    #    @notification = current_user.notifications.find(params[:id])
+    @notification = current_user.notifications.includes(files_attachments: :blob).find(params[:id])
   end
 
   def notification_params
-    params.require(:notification).permit(:title, :body, :deadline, :period_type, :is_important, :is_submission, :is_document, files: [], file_ids_to_delete: [])
+    params.require(:notification).permit(:title, :body, :deadline, :event_date, :period_type, :is_important, :is_submission, :is_document, files: [], file_ids_to_delete: [])
   end
 end

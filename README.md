@@ -251,3 +251,6 @@ https://gyazo.com/afe5f226bc71bbe4caa3effa9f62677c
 
 drawioでのリンクは以下になります。
 https://drive.google.com/file/d/1EmpMkrl_M-9-4NjVcSRqN7Aie67l4BVw/view?usp=sharing
+
+## 変更履歴
+2026年10月20日：notificationsテーブルにevent_dateカラムを追加

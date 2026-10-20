@@ -36,6 +36,15 @@
           期限なし
           <% end %>
         </div>
+        <!-- 開催日 -->
+        <div class="flex items-center text-gray-500 text-sm font-medium">
+          <svg class="w-5 h-5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+          <% if @notification.event_date? %>
+           開催日:<%= @notification.event_date %>
+          <% else %>
+          開催日なし
+          <% end %>
+        </div>
       </div>
 
       <!-- ▼ 2. タイトル ▼ -->
@@ -66,7 +75,7 @@
               <div class="flex items-center gap-4">
                 
                 <!-- 画像とそれ以外（PDFなど）で表示を分岐 -->
-                <% if file.content_type.start_with?('image/') %>
+                <% if file.content_type&.start_with?('image/') %>
                   <!-- 画像の場合：サムネイルプレビュー -->
                   <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden border border-gray-200 shadow-sm bg-white group-hover:ring-2 group-hover:ring-emerald-200 transition-all">
                     <%= image_tag file, class: "w-full h-full object-cover" %>
